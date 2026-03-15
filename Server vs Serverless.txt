@@ -1,0 +1,82 @@
+Server (Traditional Server Architecture)
+
+A server-based architecture means you manage your own servers to run an application.
+
+You are responsible for:
+
+provisioning servers
+
+scaling servers
+
+maintaining servers
+
+monitoring servers
+
+Example Flow
+User → Load Balancer → Application Server → Database
+Example Technologies
+
+Java Spring Boot server
+
+Node.js server
+
+Nginx
+
+Apache
+
+Docker containers
+
+Virtual machines
+
+Example Companies Using Servers
+
+Netflix
+
+Uber
+
+Facebook
+
+Advantages
+
+✔ Full control over infrastructure
+✔ Good for complex applications
+✔ Predictable performance
+
+Disadvantages
+
+❌ You must manage servers
+❌ Scaling requires configuration
+❌ Higher operational overhead
+
+2. Serverless Architecture
+
+Serverless does NOT mean there are no servers.
+
+It means you do not manage the servers.
+The cloud provider manages them automatically.
+
+You only write functions that run when triggered.
+
+Example Flow
+User → API Gateway → Cloud Function → Database
+Example Technologies
+
+AWS Lambda
+
+Azure Functions
+
+Google Cloud Functions
+
+Advantages
+
+✔ No server management
+✔ Automatic scaling
+✔ Pay only for usage
+✔ Faster development
+
+Disadvantages
+
+❌ Cold start latency
+❌ Limited execution time
+❌ Harder debugging
+❌ Vendor lock-in

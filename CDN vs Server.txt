@@ -1,0 +1,94 @@
+Server
+
+A server is a machine that stores data and runs the application logic.
+
+It handles things like:
+
+APIs
+
+business logic
+
+database operations
+
+authentication
+
+user requests
+
+Example Architecture
+User → Internet → Application Server → Database
+Example Servers
+
+Node.js server
+
+Java Spring Boot server
+
+Python Django server
+
+Example companies using servers:
+
+Amazon
+
+Netflix
+
+Uber
+
+2. CDN (Content Delivery Network)
+
+A CDN is a network of distributed servers that cache and deliver static content close to users.
+
+It improves:
+
+speed
+
+latency
+
+global availability
+
+CDN servers store copies of static files.
+
+Static files include
+
+images
+
+videos
+
+CSS
+
+JavaScript
+
+fonts
+
+Example CDN Flow
+User → CDN Edge Server → (if not cached) → Origin Server
+
+If the content exists in CDN cache, it is served directly.
+
+Popular CDN Services
+
+Cloudflare
+
+Akamai Technologies
+
+Amazon CloudFront
+
+Simple Real Example
+
+Imagine a website with an image.
+
+Without CDN
+User (India) → Server (USA)
+
+Slow response due to long distance.
+
+With CDN
+User (India) → CDN Server (Mumbai) → Image
+
+Much faster because the CDN server is closer.
+
+Key Differences
+Feature	Server	CDN
+Purpose	Runs application logic	Delivers cached content
+Stores	Dynamic + static data	Mostly static content
+Location	Usually few data centers	Distributed globally
+Performance	Slower for distant users	Faster due to proximity
+Example	Spring Boot server	Cloudflare CDN
