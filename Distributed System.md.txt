@@ -1,0 +1,18 @@
+A distributed system is a system where multiple computers (servers) work together over a network to act like one single system.It improves scalability, reliability, and performance by distributing workloads across multiple servers.
+
+Simple Real-Life Example
+
+Imagine 10 people working together on one project.
+
+Instead of one person doing everything, the work is divided:
+
+Person	Task
+Person 1	Database
+Person 2	API
+Person 3	Caching
+Person 4	Authentication
+Person 5	Notifications
+
+Together they behave like one team.
+
+Distributed systems work the same way.
