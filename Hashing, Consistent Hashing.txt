@@ -1,0 +1,183 @@
+Hashing and Consistent Hashing (Cache) — Notes
+1. Hashing
+Definition
+
+Hashing is a technique used to map data (keys) to servers using a hash function.
+
+Formula:
+
+server = hash(key) % N
+
+Where:
+
+key = data identifier (userId, sessionId, etc.)
+
+N = number of servers
+
+Example
+
+Servers:
+
+Cache1
+Cache2
+Cache3
+
+Keys distribution:
+
+Key	Hash	Server
+user1	21	Cache1
+user2	35	Cache2
+user3	50	Cache3
+Problem with Normal Hashing
+
+When a server is added or removed, the value of N changes.
+
+Example:
+
+Before:
+
+hash(key) % 3
+
+After adding server:
+
+hash(key) % 4
+
+Result:
+
+Most keys move to different servers
+
+Massive cache miss
+
+Database overload
+
+2. Consistent Hashing
+Definition
+
+Consistent hashing distributes servers and keys on a hash ring to minimize data movement when servers are added or removed.
+
+Instead of:
+
+hash(key) % N
+
+We place servers and keys on a circular hash ring.
+
+Hash Ring Concept
+
+Example ring:
+
+0° → 360°
+
+Servers placed on ring:
+
+Cache1 → 50
+Cache2 → 150
+Cache3 → 250
+
+Keys are also hashed and placed on ring.
+
+Rule:
+
+➡ A key is assigned to the first server clockwise on the ring.
+
+Example
+KeyA → 120
+
+Clockwise server:
+
+Cache2
+
+So:
+
+KeyA → Cache2
+Adding a New Server
+
+Add:
+
+Cache4 → 200
+
+Now only keys between 150 → 200 move.
+
+Benefits:
+
+Minimal data movement
+
+Better scalability
+
+Stable caching system
+
+3. Virtual Nodes
+Problem in Consistent Hashing
+
+Servers may receive uneven traffic.
+
+Example:
+
+Cache1 --- Cache2 -------------- Cache3
+
+Cache3 may handle most keys.
+
+Solution: Virtual Nodes
+
+Each physical server appears multiple times on the ring.
+
+Example:
+
+Cache1-A
+Cache1-B
+Cache1-C
+
+Cache2-A
+Cache2-B
+Cache2-C
+
+Cache3-A
+Cache3-B
+Cache3-C
+
+Ring becomes:
+
+C1A → C2A → C3A → C1B → C2B → C3B → C1C → C2C → C3C
+
+Now keys distribute evenly across servers.
+
+Benefits of Virtual Nodes
+
+Better load balancing
+
+Even distribution of keys
+
+Improved fault tolerance
+
+Easier scaling
+
+4. Real Systems Using Consistent Hashing
+System	Usage
+Redis Cluster	Data partitioning
+Memcached	Distributed caching
+Cassandra	Data distribution
+DynamoDB	Partitioning
+5. Interview Summary
+Hashing
+server = hash(key) % N
+
+Problem:
+
+When servers change, most keys move.
+
+Consistent Hashing
+
+Uses hash ring
+
+Keys assigned to next clockwise server
+
+Minimal data movement when servers change.
+
+Virtual Nodes
+
+Physical server represented multiple times on ring
+
+Improves load balancing
+
+One-Line Interview Answer
+
+Consistent hashing distributes keys and servers on a hash ring so that when servers are added or removed, only a small subset of keys are reassigned. Virtual nodes further improve load balancing by representing each physical server multiple times on the ring.
