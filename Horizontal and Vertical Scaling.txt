@@ -1,0 +1,52 @@
+1️⃣ Vertical Scaling (Scale Up)
+
+Vertical scaling means increasing the power of a single server.
+
+You upgrade the server’s:
+
+CPU
+
+RAM
+
+Storage
+
+Network capacity
+
+Advantages
+
+✔ Simple to implement
+✔ No architecture changes
+✔ Easy for small systems
+
+Disadvantages
+
+❌ Hardware limit exists
+❌ Expensive upgrades
+❌ Single point of failure
+
+
+2️⃣ Horizontal Scaling (Scale Out)
+
+Horizontal scaling means adding more servers instead of upgrading one server.
+
+Instead of one powerful server:
+
+Server1
+Server2
+Server3
+Server4
+
+Requests are distributed using a load balancer.
+
+Advantages
+
+✔ Highly scalable
+✔ Fault tolerant
+✔ Better performance
+✔ Used by large systems
+
+Disadvantages
+
+❌ More complex architecture
+❌ Requires load balancing
+❌ Requires distributed systems knowledge
