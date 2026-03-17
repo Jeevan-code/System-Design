@@ -181,3 +181,53 @@ Improves load balancing
 One-Line Interview Answer
 
 Consistent hashing distributes keys and servers on a hash ring so that when servers are added or removed, only a small subset of keys are reassigned. Virtual nodes further improve load balancing by representing each physical server multiple times on the ring.
+
+
+Q&A
+
+
+✅ 1. What is Caching?
+
+Caching is a technique of storing frequently accessed data in a fast storage layer (usually memory) so that future requests can be served faster without hitting the database.
+
+✅ 2. Why do we use Cache?
+
+We use cache to improve performance by reducing latency, decreasing database load, and increasing system scalability.
+
+✅ 3. What is Cache Hit vs Cache Miss?
+
+Cache Hit
+
+When requested data is found in cache and returned directly.
+
+Cache Miss
+
+When data is not found in cache, so the system fetches it from the database and stores it in cache for future use.
+
+✅ 4. What are Eviction Policies?
+
+Eviction policies define how cache removes data when memory is full.
+
+Common types:
+
+LRU (Least Recently Used) → removes least recently accessed data
+
+LFU (Least Frequently Used) → removes least frequently accessed data
+
+FIFO (First In First Out) → removes oldest data
+
+✅ 5. What is Consistent Hashing?
+
+Consistent hashing is a technique that distributes data across servers using a hash ring, ensuring that when servers are added or removed, only a small portion of data is redistributed.
+
+✅ 6. What are Virtual Nodes?
+
+Virtual nodes are multiple logical representations of a physical server on the hash ring, used to evenly distribute data and improve load balancing.
+
+✅ 7. What is Cache Invalidation?
+
+Cache invalidation is the process of updating or removing stale data from cache when the underlying data in the database changes.
+
+✅ 8. What is Cache Stampede?
+
+Cache stampede occurs when multiple requests simultaneously try to fetch data from the database after a cache miss or expiration, causing heavy load on the database.
