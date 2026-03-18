@@ -231,3 +231,147 @@ Cache invalidation is the process of updating or removing stale data from cache 
 ✅ 8. What is Cache Stampede?
 
 Cache stampede occurs when multiple requests simultaneously try to fetch data from the database after a cache miss or expiration, causing heavy load on the database.
+
+
+🔥 1. Cache Expiry (TTL - Time To Live)
+What is it?
+
+Cache expiry means data in cache is automatically removed after a certain time.
+
+Example:
+
+User data cached for 5 minutes
+
+After 5 minutes → data is deleted or refreshed.
+
+Why needed?
+
+Prevent stale data
+
+Keep cache updated
+
+Example
+Cache:
+user:101 → "Jeevan" (TTL = 300 sec)
+
+After 300 seconds → expired
+
+Interview Answer
+
+Cache expiry (TTL) ensures that cached data is automatically invalidated after a defined time to avoid stale data.
+
+🔥 2. Consistent Cache
+What is it?
+
+A consistent cache ensures that the data in cache and database are synchronized (same data).
+
+Types of Consistency
+Strong Consistency
+
+Cache always matches DB
+
+Hard to maintain
+
+Eventual Consistency (most used)
+
+Cache may be slightly outdated
+
+Eventually becomes correct
+
+Example
+DB: "Jeevan Kumar"
+Cache: "Jeevan"
+
+After some time → cache updates
+
+Interview Answer
+
+Consistent cache ensures data in cache reflects the database, typically achieved using eventual consistency in distributed systems.
+
+🔥 3. Write Policy (Very Important)
+
+Defines how data is written to cache and database.
+
+3 Types
+1️⃣ Write Through
+App → Cache → Database
+
+Both updated at same time
+✔ Consistent
+❌ Slightly slower
+
+2️⃣ Write Back (Write Behind)
+App → Cache → DB (later)
+
+✔ Very fast
+❌ Risk of data loss if cache fails
+
+3️⃣ Write Around
+App → Database (skip cache)
+
+✔ Avoid unnecessary cache
+❌ First read is slow
+
+Interview Answer
+
+Write policies define how data is written between cache and database, such as write-through, write-back, and write-around.
+
+🔥 4. Least Recently Used (LRU)
+What is it?
+
+LRU removes the data that has not been used for the longest time.
+
+Example
+
+Cache size = 3
+
+Access order:
+A → B → C
+
+Access A:
+B → C → A
+
+Add D → remove B
+Why useful?
+
+Assumes recent data is more important
+
+Widely used in Redis
+
+Interview Answer
+
+LRU evicts the least recently accessed data when cache is full.
+
+🔥 5. Least Frequently Used (LFU)
+What is it?
+
+LFU removes the data that is accessed the least number of times.
+
+Example
+Key	Count
+A	10
+B	2
+C	5
+
+👉 Remove B
+
+Why useful?
+
+Keeps frequently used data
+
+Better for stable access patterns
+
+Interview Answer
+
+LFU evicts data with the lowest access frequency when cache is full.
+
+⚡ Quick Comparison
+Concept	Key Idea
+Cache Expiry	Data removed after time
+Consistent Cache	Cache = DB (eventually)
+Write Policy	How writes happen
+LRU	Remove least recently used
+LFU	Remove least frequently used
+🔥 Final Interview Summary (Use This)
+
+Caching involves managing data freshness using TTL, ensuring consistency between cache and database, defining write policies like write-through and write-back, and handling memory limits using eviction strategies like LRU and LFU.
