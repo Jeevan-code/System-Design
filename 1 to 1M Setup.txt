@@ -1,0 +1,397 @@
+Core idea
+
+When building an app to scale from 1 to 1M users, the goal is not to build a giant system on day 1.
+
+The goal is to build:
+
+simple first
+
+easy to evolve
+
+remove bottlenecks gradually
+
+If you overengineer at 10 users, you waste time.
+If you underengineer at 1M users, the app fails.
+
+Stage 1: 1 to 100 users
+
+At this stage, optimize for speed of development, not scale.
+
+Architecture
+
+Single frontend
+
+Single backend
+
+Single database
+
+Deploy on one server or simple cloud service
+
+Example
+
+React frontend
+
+Spring Boot / Node backend
+
+MySQL or PostgreSQL
+
+One VM or one container
+
+Flow
+User → App Server → Database
+What matters here
+
+Product works
+
+Authentication works
+
+CRUD works
+
+Logging exists
+
+Basic monitoring exists
+
+Do not add yet
+
+Microservices
+
+Kafka
+
+Redis cluster
+
+Complex load balancing
+
+Distributed tracing
+
+At this stage, these are mostly unnecessary.
+
+Stage 2: 100 to 10,000 users
+
+Now traffic becomes meaningful.
+You start seeing:
+
+slower APIs
+
+repeated DB queries
+
+image/static file load
+
+occasional downtime during deploys
+
+Add these
+
+Reverse proxy / load balancer
+
+Better DB indexing
+
+Basic caching
+
+CDN for static assets
+
+Background jobs for slow tasks
+
+Architecture
+Users → Load Balancer → App Server
+                           ↓
+                         Cache
+                           ↓
+                        Database
+What changes here
+1. Caching
+
+Cache frequently read data:
+
+user profile
+
+product details
+
+home feed fragments
+
+config data
+
+2. CDN
+
+Serve:
+
+images
+
+JS/CSS
+
+videos
+from CDN instead of your app server
+
+3. Async jobs
+
+Move slow work out of request path:
+
+email sending
+
+notifications
+
+report generation
+
+image resizing
+
+4. DB optimization
+
+indexes
+
+query tuning
+
+pagination
+
+avoid N+1 queries
+
+Stage 3: 10,000 to 100,000 users
+
+Now one server starts becoming risky.
+Problems start appearing in:
+
+CPU spikes
+
+database contention
+
+app downtime
+
+scaling during traffic peaks
+
+Add these
+
+Multiple app servers
+
+Stateless backend
+
+Centralized cache
+
+Read replicas
+
+Queue/message broker
+
+Better observability
+
+Architecture
+Users
+  ↓
+Load Balancer
+  ↓
+App Servers (multiple)
+  ↓
+Redis / Cache
+  ↓
+Primary DB → Read Replica
+  ↓
+Queue for async processing
+Important design principles here
+Stateless app servers
+
+Do not store session in server memory.
+Store session in:
+
+Redis
+
+JWT
+
+shared session store
+
+Because with multiple servers, any request may go to any server.
+
+Centralized cache
+
+Local in-memory cache is no longer enough.
+Use shared cache like Redis.
+
+Read replicas
+
+Separate reads from writes where possible.
+
+Message queue
+
+Use queues for:
+
+notifications
+
+analytics events
+
+audit logs
+
+uploads processing
+
+This prevents user-facing APIs from becoming slow.
+
+Stage 4: 100,000 to 1,000,000 users
+
+At this scale, bottlenecks become systemic.
+You now think in terms of:
+
+scalability
+
+resilience
+
+fault isolation
+
+cost efficiency
+
+Add these
+
+Database partitioning/sharding where needed
+
+Service decomposition where justified
+
+Rate limiting
+
+Circuit breakers / retries
+
+Multi-region strategy if needed
+
+Strong monitoring and alerting
+
+Disaster recovery planning
+
+Architecture
+Users
+  ↓
+CDN
+  ↓
+Global / Regional Load Balancer
+  ↓
+App Tier
+  ↓
+Distributed Cache
+  ↓
+Databases / Read Replicas / Shards
+  ↓
+Queues / Event Streaming
+  ↓
+Background Workers
+What usually breaks first
+
+When an app grows, these are the common bottlenecks in order:
+
+1. Database
+
+Usually the first major bottleneck.
+
+Why:
+
+too many reads
+
+unoptimized queries
+
+missing indexes
+
+large joins
+
+no pagination
+
+Fixes:
+
+indexes
+
+caching
+
+replicas
+
+denormalization when necessary
+
+sharding later
+
+2. Application server
+
+When many concurrent users hit CPU/memory.
+
+Fixes:
+
+horizontal scaling
+
+stateless design
+
+async processing
+
+3. Static content delivery
+
+Images and frontend bundles slow down.
+
+Fix:
+
+CDN
+
+4. Synchronous workflows
+
+Request becomes too slow because everything happens inline.
+
+Fix:
+
+queues
+
+workers
+
+event-driven processing
+
+Key topics you should think about
+
+When designing for 1 to 1M users, always think through these:
+
+1. Scalability
+
+Can we add more machines instead of just making one machine bigger?
+
+This is horizontal scaling.
+
+2. Availability
+
+If one server fails, does the app still work?
+
+Need:
+
+multiple instances
+
+health checks
+
+failover
+
+3. Performance
+
+Can APIs stay fast under load?
+
+Need:
+
+caching
+
+indexing
+
+pagination
+
+async jobs
+
+4. Consistency
+
+Do users always need the latest data?
+
+Some systems need strong consistency.
+Some can tolerate eventual consistency.
+
+5. Cost
+
+A design can scale technically but be too expensive.
+
+Example:
+
+overusing DB
+
+overprovisioning infra
+
+too many always-on services
+
+6. Security
+
+As user count grows, security matters more:
+
+auth/authz
+
+rate limiting
+
+encryption
+
+secret management
+
+audit logs
