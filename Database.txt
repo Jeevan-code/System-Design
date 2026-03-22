@@ -1,0 +1,222 @@
+🧠 1. High-Level View
+
+A database stores data in tables → rows → columns (for relational DB like MySQL/Postgres).
+
+Example:
+
+Users Table
+
+| id | name   | age |
+|----|--------|-----|
+| 1  | Jeevan | 28  |
+| 2  | Ravi   | 30  |
+
+But internally, DB does NOT store it like an Excel sheet.
+
+⚙️ 2. Actual Storage (Behind the Scenes)
+
+Database stores data on disk in:
+
+👉 Files → Pages (blocks) → Rows
+
+Step 1: Data is stored in files
+
+Each table is stored as one or more files on disk.
+
+Example:
+
+users.ibd   (MySQL InnoDB file)
+Step 2: Files are divided into pages
+Page size is usually 4KB / 8KB / 16KB
+DB reads/writes data in pages, not rows
+File
+ ├── Page1 (16KB)
+ ├── Page2 (16KB)
+ ├── Page3 (16KB)
+Step 3: Pages store rows
+
+Inside a page:
+
+Page (16KB)
+ ├── Row1
+ ├── Row2
+ ├── Row3
+
+So actual storage is:
+
+Table → File → Pages → Rows
+🚀 3. How Data is Retrieved
+
+When you query:
+
+SELECT * FROM users WHERE id = 2;
+
+DB does NOT scan entire file (ideally).
+
+Instead:
+
+Finds correct page
+Reads page into memory (buffer/cache)
+Finds row inside page
+🔥 4. Role of Memory (Very Important)
+
+Database uses memory (buffer pool) to store frequently accessed pages.
+
+Disk (slow)
+ ↓
+Memory (fast)
+
+So:
+
+First read → disk
+Next reads → memory
+
+👉 This is why caching inside DB is powerful.
+
+📚 5. Indexes (Game Changer)
+
+Without index:
+
+Scan all pages → slow
+
+With index:
+
+👉 DB uses B-Tree (most common)
+
+Example
+
+Index on id:
+
+        [50]
+       /    \
+   [10-40] [60-100]
+
+DB directly jumps to correct page.
+
+With Index
+Query → Index → Page → Row
+
+Instead of:
+
+Query → Full table scan
+⚡ 6. Types of Storage Models
+Row-based storage (most common)
+
+Stores full rows together:
+
+[1, Jeevan, 28]
+[2, Ravi, 30]
+
+Used in:
+
+MySQL
+PostgreSQL
+Column-based storage
+
+Stores column-wise:
+
+IDs:   1, 2
+Names: Jeevan, Ravi
+Ages:  28, 30
+
+Used in:
+
+Data warehouses
+Analytics (BigQuery, Snowflake)
+🔐 7. Transactions & Logging
+
+DB ensures safety using:
+
+Write-Ahead Log (WAL)
+
+Before writing to disk:
+
+Write change to log → then update data
+
+So if crash happens:
+👉 DB can recover using logs
+
+🧩 8. How DB Handles Updates
+
+When you update:
+
+UPDATE users SET name = 'Jeevan Kumar' WHERE id = 1;
+
+DB:
+
+Writes change to log (WAL)
+Updates page in memory
+Later flushes to disk
+🔥 9. Why This Matters in System Design
+
+Understanding storage helps you answer:
+
+Why DB is slow?
+Disk access is slow
+Too many page reads
+No indexes → full scan
+Why indexes are important?
+Avoid scanning entire table
+Jump directly to page
+Why caching helps?
+Avoid disk access
+Serve from memory
+Why large joins are slow?
+Multiple pages scanned
+Data movement heavy
+🎯 Interview Answer (Short)
+
+Databases store data in files on disk, which are divided into pages. Each page contains multiple rows. When querying, the database loads pages into memory and retrieves rows. Indexes like B-Trees help quickly locate the correct pages, avoiding full table scans.
+
+💡 Simple Analogy
+
+Think of DB like a book:
+
+Table = Book
+Page = Actual page
+Row = Line on page
+Index = Book index (jump to page directly)
+
+
+🔥 1. How B-Tree Index Works (Core Concept)
+What is a B-Tree?
+
+A B-Tree is a balanced tree data structure used by databases to quickly find data without scanning the entire table.
+
+Without Index (Problem)
+
+Query:
+
+SELECT * FROM users WHERE id = 50;
+
+DB does:
+
+Scan Row1 → Row2 → Row3 → ... → Row50
+
+❌ Slow (Full Table Scan)
+
+With B-Tree Index
+
+Instead of scanning everything, DB builds a tree structure.
+
+Diagram (Simplified)
+                [50]
+              /      \
+        [10,20,30]   [60,70,80]
+
+Leaf nodes (actual data pointers):
+
+[10] → Row
+[20] → Row
+[30] → Row
+...
+How Search Works
+
+Search for id = 50:
+
+Step 1: Start at root → [50]
+Step 2: Found directly OR go right/left
+Step 3: Reach leaf node
+Step 4: Fetch row
+
+👉 Instead of scanning 1000 rows → only ~log(N) steps
