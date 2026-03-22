@@ -1,0 +1,147 @@
+🧠 1. What is Consistency?
+
+Consistency means all users see the same data at the same time, even in a distributed system.
+
+Example
+
+You update your profile name:
+
+DB1 → "Jeevan Kumar"
+DB2 → "Jeevan"
+
+If another user reads from DB2:
+
+❌ Sees old value → inconsistency
+
+⚡ 2. Why Consistency is Hard?
+
+Because in distributed systems:
+
+Data is stored in multiple servers
+Network delays exist
+Replication takes time
+
+So all nodes cannot update instantly.
+
+🔥 3. Types of Consistency (Very Important)
+1️⃣ Strong Consistency
+
+Every read returns the latest written value
+
+Example
+Write → "Jeevan Kumar"
+Immediately read → "Jeevan Kumar"
+
+✔ Always correct
+❌ Slower (needs coordination)
+
+Used in:
+Banking systems
+Payments
+Critical data
+2️⃣ Eventual Consistency (Most Common)
+
+Data will become consistent eventually, not immediately
+
+Example
+Write → "Jeevan Kumar"
+Read immediately → "Jeevan"
+After few seconds → "Jeevan Kumar"
+
+✔ Fast
+✔ Scalable
+❌ Temporary inconsistency
+
+Used in:
+Social media
+Caching systems
+DNS
+3️⃣ Read-After-Write Consistency
+
+After a user writes data, they will always see their latest write
+
+Example:
+
+You update profile → you always see new value
+Others may see old value briefly
+4️⃣ Monotonic Read Consistency
+
+Once a user sees updated data, they will never see older data again
+
+Example:
+
+Read1 → version 2  
+Read2 → version 1 ❌ (not allowed)
+5️⃣ Causal Consistency
+
+Operations that are related must be seen in order
+
+Example:
+
+Post → Comment
+
+Users must not see:
+
+Comment before Post ❌
+🧩 4. CAP Theorem (Core Concept)
+
+In distributed systems, you cannot have all 3:
+
+Property	Meaning
+C	Consistency
+A	Availability
+P	Partition tolerance
+CAP Rule
+
+You can choose only 2 out of 3
+
+CP System
+
+✔ Consistency
+✔ Partition tolerance
+❌ Availability
+
+Example:
+
+Banking DB
+AP System
+
+✔ Availability
+✔ Partition tolerance
+❌ Strong consistency
+
+Example:
+
+Social media
+DNS
+🚀 5. Real System Examples
+System	Consistency Type
+Bank	Strong
+Instagram likes	Eventual
+DNS	Eventual
+Cache (Redis)	Eventual
+🔥 6. How Systems Maintain Consistency
+1. Synchronous Replication
+Write → DB1 → DB2 → Success
+
+✔ Strong consistency
+❌ Slower
+
+2. Asynchronous Replication
+Write → DB1 → Success
+           ↓ later
+         DB2
+
+✔ Fast
+❌ Eventual consistency
+
+3. Quorum-based systems
+
+Example:
+
+3 replicas → need 2 to agree
+
+Used in:
+
+Cassandra
+DynamoDB
