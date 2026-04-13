@@ -1,0 +1,94 @@
+⚙️ How GC Works Internally
+1. Mark
+Identify objects that are still in use (reachable)
+2. Sweep
+Remove unused objects
+3. Compact
+Rearrange memory to remove gaps
+🌳 GC Roots
+
+Objects are considered alive if reachable from:
+
+Local variables (Stack)
+Static variables
+Active threads
+JNI references
+🧱 Memory Structure
+🔹 Heap Memory
+Young Generation
+New objects are created here
+Frequent cleanup (Minor GC)
+Old Generation
+Long-living objects
+Cleaned less frequently (Major GC)
+Metaspace
+Stores class metadata
+⚡ Types of GC
+Minor GC
+Cleans Young Generation
+Fast
+Major / Full GC
+Cleans Old Generation
+Slow
+🔬 GC Algorithms
+Mark-Sweep
+Mark-Sweep-Compact
+Copying (Young Gen)
+Generational GC
+🚀 Modern GC (G1 GC)
+Divides heap into regions
+Collects regions with most garbage first
+Reduces pause time
+⚠️ Important Concepts
+Stop-The-World (STW)
+Application pauses during GC
+Can affect performance
+System.gc()
+System.gc(); // Request to JVM (not guaranteed)
+finalize() (Deprecated)
+Not reliable
+Avoid using
+⚠️ Memory Leak in Java
+
+Occurs when:
+
+Object is still referenced but not needed
+
+Common Causes
+Static collections
+Unbounded caches
+Listeners not removed
+ThreadLocal misuse
+🔍 GC Log Example
+256M -> 120M (512M), 0.05 secs
+Before GC → After GC
+Total heap size
+Pause time
+🧪 Debugging Tools
+VisualVM
+JConsole
+
+Used for:
+
+Heap analysis
+Memory leak detection
+🔥 Real-World Problems
+High GC pause → Slow APIs
+Frequent GC → High CPU usage
+Memory leak → OutOfMemoryError
+🎯 Interview One-Liners
+"GC automatically removes unreachable objects from heap memory."
+"Object is eligible for GC when no references exist."
+"G1 GC reduces pause time and improves performance."
+💡 Key Takeaways
+GC works only on Heap memory
+You cannot force GC
+Static objects are not collected unless reference is removed
+GC improves memory but can impact performance
+📚 Summary
+
+Garbage Collection in Java is an automatic memory management process that:
+
+Identifies unused objects
+Removes them from memory
+Improves performance and stability
